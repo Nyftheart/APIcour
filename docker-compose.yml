@@ -1,0 +1,46 @@
+version: "3.8"
+
+services:
+
+  db:
+    image: mysql:latest
+    container_name: dbAPI
+    command: --default-authentication-plugin=mysql_native_password
+    restart: unless-stopped
+    environment:
+      MYSQL_USER: id21680564_nyftheart
+      MYSQL_ROOT_PASSWORD: mypassword
+      MYSQL_PASSWORD: alexououA1.k
+      MYSQL_DATABASE: id21680564_evedata
+    volumes:
+      - my-db:/var/lib/mysql
+    ports:
+      - '3306:3306'
+
+  phpmyadmin:
+    container_name: phpmyadminAPI
+    image: phpmyadmin/phpmyadmin:latest
+    ports:
+      - "8082:80"
+    environment:
+      MYSQL_ROOT_PASSWORD: mypassword
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: mypassword
+
+
+  python:
+    image: python:3.8
+    container_name: PythonAPI
+    command: sh -c "pip install -r /app/APIcours/requirements.txt && cd app/APIcours && uvicorn main:app --reload --host 0.0.0.0 --port 8000"
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./:/app/APIcours
+    depends_on:
+      - db
+
+
+
+volumes:
+  my-db:
