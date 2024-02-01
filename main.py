@@ -4,6 +4,7 @@ import mysql.connector
 
 app = FastAPI()
 
+
 # Configurer la connexion à la base de données
 # Paramètres de connexion à la base de données
 host = "db"
