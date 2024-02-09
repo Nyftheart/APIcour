@@ -40,7 +40,38 @@ services:
     depends_on:
       - db
 
+  python2:
+    image: python:3.8
+    container_name: PythonAPIUser
+    command: sh -c "pip install -r /app/APIcours/requirements.txt && cd app/APIcours && uvicorn User:app --reload --host 0.0.0.0 --port 8001"
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./:/app/APIcours
+    depends_on:
+      - db
 
+  python3:
+    image: python:3.8
+    container_name: PythonAPIType
+    command: sh -c "pip install -r /app/APIcours/requirements.txt && cd app/APIcours && uvicorn Type:app --reload --host 0.0.0.0 --port 8002"
+    ports:
+      - "8002:8002"
+    volumes:
+      - ./:/app/APIcours
+    depends_on:
+      - db
+
+  python4:
+    image: python:3.8
+    container_name: PythonAPISSO
+    command: sh -c "pip install -r /app/APIcours/requirements.txt && cd app/APIcours && uvicorn SSO:app --reload --host 0.0.0.0 --port 8003"
+    ports:
+      - "8003:8003"
+    volumes:
+      - ./:/app/APIcours
+    depends_on:
+      - db
 
 volumes:
   my-db:
