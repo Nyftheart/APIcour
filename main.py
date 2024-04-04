@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.responses import JSONResponse
 import mysql.connector
+import pika
 
 app = FastAPI()
 
@@ -69,3 +70,14 @@ async def delete_book(livre_id: int, db: mysql.connector.connection.MySQLConnect
     cursor.execute(query, (livre_id,))
     db.commit()
     return JSONResponse(content={"message": "Livre supprimé avec succès"})
+@app.delete("/api/rabbit")
+async def rabbit():
+    # Paramètres de connexion à RabbitMQ
+    connection = pika.BlockingConnection(
+        pika.ConnectionParameters(host='localhost'))
+    channel = connection.channel()
+
+    channel.basic_publish(exchange='', routing_key='hello', body='Hello World!')
+    print(" [x] Sent 'Hello World!'")
+    connection.close()
+    return JSONResponse(content={"message": "Message envoyé avec succès à RabbitMQ"})

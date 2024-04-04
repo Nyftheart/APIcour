@@ -73,5 +73,14 @@ services:
     depends_on:
       - db
 
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"  # Port pour l'accès aux clients
+      - "15672:15672"  # Port pour la console de management
+    volumes:
+      - /Users/nyftheart/PycharmProjects/APIcours/Rabitmq:/var/lib/rabbitmq/
+
 volumes:
   my-db:
